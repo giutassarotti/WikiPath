@@ -1,0 +1,4 @@
+[submodule "src/subprojects/served"]
+	path = src/subprojects/served
+	url = https://github.com/meltwater/served
+	branch = master
