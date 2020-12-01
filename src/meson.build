@@ -11,30 +11,13 @@ project('WikiPath',
 
 cmake = import('cmake')
 
-cpp 			= meson.get_compiler('cpp')
+cpp 		= meson.get_compiler('cpp')
 
-pthread_dep 	= cpp.find_library('pthread', required : true)
+pthread 	= cpp.find_library('pthread', required : true)
+dl			= cpp.find_library('dl', required : true)
 
-sqlitecpp_dep  	= declare_dependency(dependencies:  [cmake.subproject('SQLiteCpp').dependency('SQLiteCpp'), 
+sqlitecpp  	= declare_dependency(dependencies:  [cmake.subproject('SQLiteCpp').dependency('SQLiteCpp'), 
 													cmake.subproject('SQLiteCpp').dependency('sqlite3'), 
-													dl_dep, 
-													pthread_dep])
-
-cpp_httplib_dep	= declare_dependency(
-					include_directories: 'subprojects/cpp-httplib/',
-					dependencies: [
-						pthread_dep
-					]
-				)
-
-catch2_main_lib = static_library(
-    'catch2_main',
-    ['catch_main.cpp'],
-    include_directories : 'subprojects/Catch2/single_include/catch2'
-)
-catch2_dep = declare_dependency(
-    include_directories : 'subprojects/Catch2/single_include/catch2',
-    link_with: [catch2_main_lib]
-)
-
+													dl, 
+													pthread])
 subdir('graph')
