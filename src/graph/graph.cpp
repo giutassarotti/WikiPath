@@ -15,46 +15,39 @@ void Node::addLinks(const vector<Node*>& links)
 	this->links.insert(this->links.begin(), links.begin(), links.end());
 }
 
-vector<vector<string> Node::searchGoal(vector<string> lilPath, vector<vector<string>>& bigPath, const string& goal, unsigned char depth)
+void Node::searchGoal(vector<string> lilPath, vector<vector<string>>& bigPath, const string& goal, unsigned char depth)
 {  
 	if (depth==0)
-		return bigPath;
+		return;
 	
-	for (const Node& n: this->links)
+	for (Node* n: this->links)
 	{
-		if (n.label == goal)
+		if (n->label == goal)
 			 bigPath.emplace_back(lilPath);
 		else 
 		{
-			lilPath.push_back(n.label);
+			lilPath.push_back(n->label);
 			
-			if (n.links.size() == 0)
-				Graph::getInstance().expandNode(n);
+			if (n->links.size() == 0)
+				Graph::getInstance().expandNode(*n);
 			
-			n.searchGoal(lilPath, bigPath, goal, depth-1);
+			n->searchGoal(lilPath, bigPath, goal, depth-1);
 		}
 	}
 }
 
 Graph::Graph():
-	db("database.sqlite", SQLite::OPEN_READ)
+	db("database.sqlite")
 {}
 
-Graph& Graph::getInstance()
-{
-	static Graph myGraph();
-	
-	return myGraph;
-}
-
-Node& Graph::getNode(const string& label) const
+Node& Graph::getNode(const string& label)
 {
 	Node& n = this->nodes[label];
 	if (n.label == "")
 		n.label = label;
 			
 	if (n.links.size() == 0)
-		this->expandNode(label);
+		this->expandNode(n);
 	
 	return n;
 }
@@ -76,11 +69,12 @@ void Graph::expandNode(Node& node)
 	}
 }
 
-vector<vector<string> Graph::createPath(const string& start, const string& goal, unsigned char depth) const
+vector<vector<string>> Graph::createPath(const string& start, const string& goal, unsigned char depth)
 {
-	Node& start = this->getNode(start);
+	Node& s = this->getNode(start);
 	vector<string> lilPath;
 	vector<vector<string>> bigPath;
 	
-	return start.searchGoal(lilPath, bigPath, goal);
+	s.searchGoal(lilPath, bigPath, goal, depth);
+	return bigPath;
 }

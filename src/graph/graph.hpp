@@ -13,11 +13,12 @@ struct Node
 	std::vector<Node*> links;
 	
 	Node(const std::string& label);
+	Node() {}
 	
 	void addLinks(const std::vector<Node*>& links);
-	std::vector<std::vector<std::string> searchGoal(const std::string& goal, unsigned char depth);
+	void searchGoal(std::vector<std::string> lilPath, std::vector<std::vector<std::string>>& bigPath, const std::string& goal, unsigned char depth);
 	
-}
+};
 
 class Graph
 {	
@@ -29,11 +30,16 @@ class Graph
 		//my little graph is a singleton, just one in the universe
 		Graph();
 		
-		Node& getNode(const std::string& label) const;
+		Node& getNode(const std::string& label);
 	public:
-		Graph& getInstance() const;
-		Node& expandNode(Node& node);
+		static inline Graph& getInstance()
+		{
+			static Graph myGraph;
+			
+			return myGraph;
+		};
+		void expandNode(Node& node);
 		
 		//Note: max depth is ~500
-		std::vector<std::vector<std::string> createPath(const std::string& start, const std::string& goal, unsigned char depth) const;
-}
+		std::vector<std::vector<std::string>> createPath(const std::string& start, const std::string& goal, unsigned char depth);
+};
