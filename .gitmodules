@@ -2,3 +2,9 @@
 [submodule "src/subprojects/SQLiteCpp"]
 	path = src/subprojects/SQLiteCpp
 	url = https://github.com/SRombauts/SQLiteCpp
+[submodule "src/subprojects/cpp-httlib"]
+	path = src/subprojects/cpp-httlib
+	url = https://github.com/yhirose/cpp-httplib
+[submodule "src/subprojects/cpp-httplib"]
+	path = src/subprojects/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib

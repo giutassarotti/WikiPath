@@ -71,10 +71,12 @@ void Graph::expandNode(Node& node)
 
 vector<vector<string>> Graph::createPath(const string& start, const string& goal, unsigned char depth)
 {
+	cout << "esisto";
 	Node& s = this->getNode(start);
 	vector<string> lilPath;
 	vector<vector<string>> bigPath;
 	
 	s.searchGoal(lilPath, bigPath, goal, depth);
+	
 	return bigPath;
 }
