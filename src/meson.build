@@ -20,4 +20,20 @@ sqlitecpp  	= declare_dependency(dependencies:  [cmake.subproject('SQLiteCpp').d
 													cmake.subproject('SQLiteCpp').dependency('sqlite3'), 
 													dl, 
 													pthread])
+
+cpp_httplib	= declare_dependency(
+					include_directories: 'subprojects/cpp-httplib/',
+					dependencies: [
+						pthread
+					]
+				)
+													
 subdir('graph')
+
+
+executable(	'WikiPath', 
+			'main.cpp', 
+			dependencies : [
+				cpp_httplib,
+				graph
+			])
